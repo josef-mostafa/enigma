@@ -1,5 +1,6 @@
+from collections import namedtuple
 from enum import Enum
-from typing import Dict
+from typing import Dict, Set
 
 
 class Mapping:
@@ -39,19 +40,23 @@ class ReflectorMap(Mapping):
         chars = CharacterMap()
         for i, c in enumerate(chars.get_characters()):
             self.forward[chars.forward(c)] = chars.forward(mapping_string[i])
-    
+
     def reverse(self, character: str) -> str:
         return self.forward.get(character, character)
 
 
+RotorDefinition = namedtuple("RotorDefinition", ["mapping", "notch"])
+
+
 class RotorType(Enum):
-    I = RotorMap("EKMFLGDQVZNTOWYHXUSPAIBRCJ")
-    II = RotorMap("AJDKSIRUXBLHWTMCQGZNPYFVOE")
-    III = RotorMap("BDFHJLCPRTXVZNYEIWGAKMUSQO")
-    IV = RotorMap("ESOVPZJAYQUIRHXLNFTGKDCMWB")
-    V = RotorMap("VZBRGITYUPSDNHLXAWMJQOFECK")
+    I = RotorDefinition("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q")
+    II = RotorDefinition("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E")
+    III = RotorDefinition("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V")
+    IV = RotorDefinition("ESOVPZJAYQUIRHXLNFTGKDCMWB", "J")
+    V = RotorDefinition("VZBRGITYUPSDNHLXAWMJQOFECK", "Z")
 
 
 class ReflectorType(Enum):
-    B = ReflectorMap("YRUHQSLDPXNGOKMIEBFZCWVJAT")
-    C = ReflectorMap("FVPJIAOYEDRZXWGCTKUQSBNMHL")
+    A = "EJMZALYXVBWFCRQUONTSPIKHGD"
+    B = "YRUHQSLDPXNGOKMIEBFZCWVJAT"
+    C = "FVPJIAOYEDRZXWGCTKUQSBNMHL"

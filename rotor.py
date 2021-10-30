@@ -1,6 +1,6 @@
 from typing import Set
 
-from mappings import ReflectorMap, RotorMap, RotorType, ReflectorType
+from mappings import ReflectorMap, ReflectorType, RotorMap, RotorType
 
 
 class Rotor(object):
@@ -13,26 +13,38 @@ class Rotor(object):
         self.rotor_size: int
         self.reset()
 
+    def __repr__(self) -> str:
+        return f"{RotorType}: {self.rotor_offset}"
+
     def reset(self) -> None:
         self.rotor_offset = 1
         self.ring_position = 0
-        self.notches = set()
-        self.rotor_map = RotorMap(self.rotor_type)
+        self.notches = set(self.rotor_type.value.notch)
+        self.rotor_map = RotorMap(self.rotor_type.value.mapping)
         self.rotor_size = 26
 
-    def set_position(self, position: int) -> None:
+    def set_ring_position(self, position: int) -> None:
         if position <= 0 or position > self.rotor_size:
             raise ValueError("Invalid position")
         self.ring_position = position
+
+    def set_rotor_offset(self, offset: int) -> None:
+        if offset <= 0 or offset > self.rotor_size:
+            raise ValueError("Invalid offset")
+        self.rotor_offset = offset
 
     def add_notch(self, notch: int) -> None:
         if notch <= 0 or notch > self.rotor_size:
             raise ValueError("Invalid notch position")
         self.notches.add(notch)
 
+    def remove_notch(self, notch: int) -> None:
+        if notch <= 0 or notch > self.rotor_size:
+            raise ValueError("Invalid notch position")
+        self.notches.remove(notch)
+
     def rotate(self) -> bool:
         """
-            Advances the rotor position by one.
             Returns True if the rotor has passed one of its notches.
         """
         passed_notch = self.rotor_offset in self.notches
@@ -41,15 +53,15 @@ class Rotor(object):
         self.rotor_offset += 1
         return passed_notch
 
-    def forward(self, char: int) -> int:
+    def forward(self, char: str) -> str:
         if char <= 0 or char > self.rotor_size:
             raise ValueError("Invalid character")
-        return self.rotor_map[char]
+        return self.rotor_map.forward(char)
 
-    def reverse(self, char: int) -> int:
+    def reverse(self, char: str) -> str:
         if char <= 0 or char > self.rotor_size:
             raise ValueError("Invalid character")
-        return self.rotor_map[char]
+        return self.rotor_map.reverse(char)
 
 
 class Reflector(object):
@@ -61,7 +73,7 @@ class Reflector(object):
     def reset(self) -> None:
         self.reflector_map = RotorMap(self.reflector_type)
 
-    def forward(self, char: int) -> int:
+    def forward(self, char: str) -> str:
         if char <= 0 or char > self.rotor_size:
             raise ValueError("Invalid character")
         return self.rotor_map[char]
