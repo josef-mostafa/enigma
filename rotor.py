@@ -1,4 +1,4 @@
-from typing import Set
+from typing import List, Set
 
 from mappings import ReflectorMap, ReflectorType, RotorMap, RotorType
 
@@ -11,6 +11,7 @@ class Rotor(object):
         self.ring_position: int
         self.rotor_offset: int
         self.rotor_size: int
+        self.chars: List[str]
         self.reset()
 
     def __repr__(self) -> str:
@@ -22,9 +23,10 @@ class Rotor(object):
         self.notches = set(self.rotor_type.value.notch)
         self.rotor_map = RotorMap(self.rotor_type.value.mapping)
         self.rotor_size = 26
+        self.chars = set(map(str, range(1, self.rotor_size + 1)))
 
     def set_ring_position(self, position: int) -> None:
-        if position <= 0 or position > self.rotor_size:
+        if position < 0 or position > self.rotor_size:
             raise ValueError("Invalid position")
         self.ring_position = position
 
@@ -54,12 +56,12 @@ class Rotor(object):
         return passed_notch
 
     def forward(self, char: str) -> str:
-        if char <= 0 or char > self.rotor_size:
+        if char not in self.chars:
             raise ValueError("Invalid character")
         return self.rotor_map.forward(char)
 
     def reverse(self, char: str) -> str:
-        if char <= 0 or char > self.rotor_size:
+        if char not in self.chars:
             raise ValueError("Invalid character")
         return self.rotor_map.reverse(char)
 
@@ -68,12 +70,16 @@ class Reflector(object):
     def __init__(self, reflector_type: ReflectorType) -> None:
         self.reflector_type = reflector_type
         self.reflector_map: ReflectorMap
+        self.reflector_size: int
+        self.chars: List[str]
         self.reset()
 
     def reset(self) -> None:
-        self.reflector_map = RotorMap(self.reflector_type)
+        self.reflector_map = ReflectorMap(self.reflector_type.value)
+        self.reflector_size = 26
+        self.chars = set(map(str, range(1, self.reflector_size + 1)))
 
     def forward(self, char: str) -> str:
-        if char <= 0 or char > self.rotor_size:
+        if char not in self.chars:
             raise ValueError("Invalid character")
-        return self.rotor_map[char]
+        return self.reflector_map.forward(char)
