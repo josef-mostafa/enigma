@@ -60,11 +60,15 @@ class Rotor(object):
     def forward(self, char: int) -> int:
         if char not in self.chars:
             raise ValueError("Invalid character")
-        char += self.rotor_offset - 1
+        char += self.rotor_offset - self.ring_position
         while char > 26:
             char -= 26
+        while char < 1:
+            char += 26
         char = self.rotor_map.forward(char)
-        char -= self.rotor_offset - 1
+        char -= self.rotor_offset - self.ring_position
+        while char > 26:
+            char -= 26
         while char < 1:
             char += 26
         return char
@@ -72,11 +76,15 @@ class Rotor(object):
     def reverse(self, char: int) -> int:
         if char not in self.chars:
             raise ValueError("Invalid character")
-        char += self.rotor_offset - 1#+ self.ring_position
+        char += self.rotor_offset - self.ring_position
         while char > 26:
             char -= 26
+        while char < 1:
+            char += 26
         char = self.rotor_map.reverse(char)
-        char -= self.rotor_offset - 1
+        char -= self.rotor_offset - self.ring_position
+        while char > 26:
+            char -= 26
         while char < 1:
             char += 26
         return char

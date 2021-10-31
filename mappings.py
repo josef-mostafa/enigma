@@ -33,8 +33,10 @@ class RotorMap(Mapping):
         self.reverse_mappings: Dict[int, int] = {}
         chars = CharacterMap()
         for i, c in enumerate(chars.get_characters()):
-            self.forward_mappings[int(chars.forward(c))] = int(chars.forward(mapping_string[i]))
-            self.reverse_mappings[int(chars.forward(mapping_string[i]))] = int(chars.forward(c))
+            self.forward_mappings[int(chars.forward(c))] = int(
+                chars.forward(mapping_string[i]))
+            self.reverse_mappings[int(chars.forward(mapping_string[i]))] = int(
+                chars.forward(c))
 
 
 class ReflectorMap(Mapping):
@@ -43,7 +45,8 @@ class ReflectorMap(Mapping):
         self.reverse_mappings: Dict[int, int] = {}
         chars = CharacterMap()
         for i, c in enumerate(chars.get_characters()):
-            self.forward_mappings[int(chars.forward(c))] = int(chars.forward(mapping_string[i]))
+            self.forward_mappings[int(chars.forward(c))] = int(
+                chars.forward(mapping_string[i]))
 
     def reverse(self, character: int) -> int:
         return self.forward.get(character, character)
