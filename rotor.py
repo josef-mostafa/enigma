@@ -1,4 +1,4 @@
-from typing import List, Set
+from typing import Set
 
 from mappings import ReflectorMap, ReflectorType, RotorMap, RotorType
 
@@ -11,7 +11,7 @@ class Rotor(object):
         self.ring_position: int
         self.rotor_offset: int
         self.rotor_size: int
-        self.chars: List[str]
+        self.chars: Set[int]
         self.reset()
 
     def __repr__(self) -> str:
@@ -19,29 +19,29 @@ class Rotor(object):
 
     def reset(self) -> None:
         self.rotor_offset = 1
-        self.ring_position = 0
+        self.ring_position = 1
         self.notches = set(self.rotor_type.value.notch)
         self.rotor_map = RotorMap(self.rotor_type.value.mapping)
         self.rotor_size = 26
-        self.chars = set(map(str, range(1, self.rotor_size + 1)))
+        self.chars = set(range(1, self.rotor_size + 1))
 
     def set_ring_position(self, position: int) -> None:
-        if position < 0 or position > self.rotor_size:
+        if position not in self.chars:
             raise ValueError("Invalid position")
         self.ring_position = position
 
     def set_rotor_offset(self, offset: int) -> None:
-        if offset <= 0 or offset > self.rotor_size:
+        if offset not in self.chars:
             raise ValueError("Invalid offset")
         self.rotor_offset = offset
 
     def add_notch(self, notch: int) -> None:
-        if notch <= 0 or notch > self.rotor_size:
+        if notch not in self.chars:
             raise ValueError("Invalid notch position")
         self.notches.add(notch)
 
     def remove_notch(self, notch: int) -> None:
-        if notch <= 0 or notch > self.rotor_size:
+        if notch not in self.chars:
             raise ValueError("Invalid notch position")
         self.notches.remove(notch)
 
@@ -53,17 +53,33 @@ class Rotor(object):
         if self.rotor_offset == self.rotor_size:
             self.rotor_offset = 1
         self.rotor_offset += 1
+        while self.rotor_offset > 26:
+            self.rotor_offset -= 26
         return passed_notch
 
-    def forward(self, char: str) -> str:
+    def forward(self, char: int) -> int:
         if char not in self.chars:
             raise ValueError("Invalid character")
-        return self.rotor_map.forward(char)
+        char += self.rotor_offset - 1
+        while char > 26:
+            char -= 26
+        char = self.rotor_map.forward(char)
+        char -= self.rotor_offset - 1
+        while char < 1:
+            char += 26
+        return char
 
-    def reverse(self, char: str) -> str:
+    def reverse(self, char: int) -> int:
         if char not in self.chars:
             raise ValueError("Invalid character")
-        return self.rotor_map.reverse(char)
+        char += self.rotor_offset - 1#+ self.ring_position
+        while char > 26:
+            char -= 26
+        char = self.rotor_map.reverse(char)
+        char -= self.rotor_offset - 1
+        while char < 1:
+            char += 26
+        return char
 
 
 class Reflector(object):
@@ -71,15 +87,15 @@ class Reflector(object):
         self.reflector_type = reflector_type
         self.reflector_map: ReflectorMap
         self.reflector_size: int
-        self.chars: List[str]
+        self.chars: Set[int]
         self.reset()
 
     def reset(self) -> None:
         self.reflector_map = ReflectorMap(self.reflector_type.value)
         self.reflector_size = 26
-        self.chars = set(map(str, range(1, self.reflector_size + 1)))
+        self.chars = set(range(1, self.reflector_size + 1))
 
-    def forward(self, char: str) -> str:
+    def forward(self, char: int) -> int:
         if char not in self.chars:
             raise ValueError("Invalid character")
         return self.reflector_map.forward(char)

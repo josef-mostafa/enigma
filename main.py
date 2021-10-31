@@ -8,7 +8,7 @@ def main():
     s.set_rotor(RotorType.II, 1)
     s.set_rotor(RotorType.III, 2)
     s.set_reflector(ReflectorType.A)
-    print(s.encrypt("M"))
+    print(s.encrypt("ENIGMATEST"))
 
 
 if __name__ == "__main__":
