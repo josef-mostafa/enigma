@@ -17,6 +17,7 @@ class Mapping:
 class CharacterMap(Mapping):
     def __init__(self) -> None:
         self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        self.size = len(self.characters)
         self.forward_mappings: Dict[str, str] = {}
         self.reverse_mappings: Dict[str, str] = {}
         for i, c in enumerate(self.characters):

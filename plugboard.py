@@ -3,13 +3,13 @@ from typing import Dict
 
 class Plugboard(object):
     def __init__(self) -> None:
-        self.max_size = 10
+        self.max_plugs = 10
         self.size = 0
         self.mapping: Dict[str, str] = {}
 
     def add_plug(self, char_a: str, char_b: str) -> None:
-        if (self.size == self.max_size):
-            raise Exception("Pinboard is full")
+        if (self.size == self.max_plugs):
+            raise Exception("Plugboard is full")
 
         if (char_a in self.mapping):
             raise Exception("Plug already exists")
@@ -28,3 +28,6 @@ class Plugboard(object):
         del self.mapping[self.mapping[char]]
         del self.mapping[char]
         self.size -= 1
+
+    def encrypt(self, plaintext: str) -> str:
+        return "".join([self.mapping.get(char, char) for char in plaintext])

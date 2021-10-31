@@ -5,13 +5,16 @@ from rotor import Reflector, Rotor
 
 
 class Spindle(object):
-    def __init__(self, capacity: int) -> None:
+    def __init__(self, capacity: int = 3) -> None:
         self.capacity = capacity
         self.rotors: List[Rotor] = [None] * capacity
         self.ring_positions: List[int] = [1] * capacity
         self.rotor_offsets: List[int] = [1] * capacity
         self.reflector: Reflector
-        self.chars: CharacterMap = CharacterMap()
+        self.chars_map: CharacterMap = CharacterMap()
+
+    def set_capacity(self, capacity: int) -> None:
+        self.capacity = capacity
 
     def set_rotor(self, rotor: RotorType, position: int) -> None:
         if position < 0 or position >= self.capacity:
@@ -40,12 +43,13 @@ class Spindle(object):
             raise Exception("One of the rotors or the reflector is missing")
 
         ciphertext = ""
-        for char in map(lambda x: int(self.chars.forward(x)), plaintext):
-            while ((i := 0) < self.capacity):
+        for char in map(lambda x: int(self.chars_map.forward(x)), plaintext):
+            for i in range(self.capacity):
                 if (self.rotors[i].rotate()):
                     i += 1
-                else:
-                    break
+                    continue
+                break
+            self.rotor_offsets = [r.rotor_offset for r in self.rotors]
 
             for rotor in self.rotors:
                 char = rotor.forward(char)
@@ -55,6 +59,6 @@ class Spindle(object):
             for rotor in reversed(self.rotors):
                 char = rotor.reverse(char)
 
-            ciphertext += self.chars.reverse(str(char))
+            ciphertext += self.chars_map.reverse(str(char))
 
         return ciphertext
