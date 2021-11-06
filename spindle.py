@@ -12,6 +12,10 @@ class Spindle(object):
         self.rotor_offsets: List[int] = [1] * capacity
         self.reflector: Reflector
         self.chars_map: CharacterMap = CharacterMap()
+        self.double_step: bool = False
+
+    def set_double_step(self, double_step: bool) -> None:
+        self.double_step = double_step
 
     def set_capacity(self, capacity: int) -> None:
         self.capacity = capacity
@@ -38,24 +42,42 @@ class Spindle(object):
     def set_reflector(self, reflector: ReflectorType) -> None:
         self.reflector = Reflector(reflector)
 
+    def reset_rotors(self) -> None:
+        for rotor in self.rotors:
+            rotor.reset()
+        self.ring_positions = [1] * self.capacity
+        self.rotor_offsets = [1] * self.capacity
+
+    def step_rotors(self) -> None:
+        for i in range(self.capacity):
+            if (self.rotors[i].rotate()):
+                i += 1
+                continue
+            break
+        self.rotor_offsets = [r.rotor_offset for r in self.rotors]
+
+
     def encrypt(self, plaintext: str) -> str:
         if any([r == None for r in self.rotors + [self.reflector]]):
             raise Exception("One of the rotors or the reflector is missing")
 
         ciphertext = ""
         for char in map(lambda x: int(self.chars_map.forward(x)), plaintext):
-            for i in range(self.capacity):
-                if (self.rotors[i].rotate()):
-                    i += 1
-                    continue
-                break
-            self.rotor_offsets = [r.rotor_offset for r in self.rotors]
+            # rotate the rotors
+            self.step_rotors()
 
+            # double step
+            if self.double_step:
+                self.step_rotors()
+
+            # encrypt through the rotors forwards
             for rotor in self.rotors:
                 char = rotor.forward(char)
 
+            # reflect through the reflector
             char = self.reflector.forward(char)
 
+            # encrypt through the rotors backwards
             for rotor in reversed(self.rotors):
                 char = rotor.reverse(char)
 

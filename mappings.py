@@ -16,7 +16,7 @@ class Mapping:
 
 class CharacterMap(Mapping):
     def __init__(self) -> None:
-        self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 ,.!@#$%^&*()"
         self.size = len(self.characters)
         self.forward_mappings: Dict[str, str] = {}
         self.reverse_mappings: Dict[str, str] = {}
@@ -57,14 +57,14 @@ RotorDefinition = namedtuple("RotorDefinition", ["mapping", "notch"])
 
 
 class RotorType(Enum):
-    I = RotorDefinition("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q")
-    II = RotorDefinition("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E")
-    III = RotorDefinition("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V")
-    IV = RotorDefinition("ESOVPZJAYQUIRHXLNFTGKDCMWB", "J")
-    V = RotorDefinition("VZBRGITYUPSDNHLXAWMJQOFECK", "Z")
+    I   = RotorDefinition("EKMFLGDQVZNTOWYHXUSPAIBRCJekmflgdqvzntowyhxuspaibrcj1234567890 ,.!@#$%^&*()", "Q")
+    II  = RotorDefinition("AJDKSIRUXBLHWTMCQGZNPYFVOEajdksiruxblhwtmcqgznpyfvoe1234567890 ,.!@#$%^&*()", "E")
+    III = RotorDefinition("BDFHJLCPRTXVZNYEIWGAKMUSQObdfhjlcprtxvznyeiwgakmusqo1234567890 ,.!@#$%^&*()", "V")
+    IV  = RotorDefinition("ESOVPZJAYQUIRHXLNFTGKDCMWBesovpzjayquirhxlnftgkdcmwb1234567890 ,.!@#$%^&*()", "J")
+    V   = RotorDefinition("VZBRGITYUPSDNHLXAWMJQOFECKvzbrgityupsdnhlxawmjqofeck1234567890 ,.!@#$%^&*()", "Z")
 
 
 class ReflectorType(Enum):
-    A = "EJMZALYXVBWFCRQUONTSPIKHGD"
-    B = "YRUHQSLDPXNGOKMIEBFZCWVJAT"
-    C = "FVPJIAOYEDRZXWGCTKUQSBNMHL"
+    A = "EJMZALYXVBWFCRQUONTSPIKHGDejmzalyxvbwfcrquontspikhgd1234567890 ,.!@#$%^&*()"
+    B = "YRUHQSLDPXNGOKMIEBFZCWVJATyruhqsldpxngokmiebfzcwvjat1234567890 ,.!@#$%^&*()"
+    C = "FVPJIAOYEDRZXWGCTKUQSBNMHLfvpjiaoyedrzxwgctkuqsbnmhl1234567890 ,.!@#$%^&*()"

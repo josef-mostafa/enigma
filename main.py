@@ -19,7 +19,14 @@ def main():
     e.plugboard.add_plug("G", "U")
     e.plugboard.add_plug("L", "B")
     e.plugboard.add_plug("I", "Y")
-    print(e.encrypt("TESTTESTHELLOWORLDTESTHELLOWORLDTESTTESTHELLOWORLDHELLOWORLDTESTHELLOWORLD"))
+    e.spindle.set_double_step(True)
+    s = e.encrypt("TESTTESTHELLOWORLDTESTHELLOWORLDTESTTESTHELLOWORLDHELLOWORLDTESTHELLOWORLD")
+    print(s)
+    e.spindle.reset_rotors()
+    e.spindle.set_ring_position(0, 2)
+    e.spindle.set_ring_position(1, 6)
+    e.spindle.set_ring_position(2, 10)
+    print(e.encrypt(s))
 
 
 if __name__ == "__main__":
