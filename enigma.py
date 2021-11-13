@@ -7,6 +7,9 @@ class Enigma(object):
         self.spindle: Spindle = Spindle()
         self.plugboard: Plugboard = Plugboard()
 
+    def __repr__(self) -> None:
+        return f"Spindle:\n{self.spindle}\n\nPlugboard:\n{self.plugboard}"
+
     def reset(self) -> None:
         self.spindle = Spindle()
         self.plugboard = Plugboard()

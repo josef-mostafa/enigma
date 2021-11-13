@@ -10,7 +10,7 @@ class Spindle(object):
         self.rotors: List[Rotor] = [None] * capacity
         self.ring_positions: List[int] = [1] * capacity
         self.rotor_offsets: List[int] = [1] * capacity
-        self.reflector: Reflector
+        self.reflector: Reflector = None
         self.chars_map: CharacterMap = CharacterMap()
         self.steps_per_character: int = 1
 
