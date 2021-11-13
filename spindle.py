@@ -1,6 +1,6 @@
 from typing import List
 
-from mappings import CharacterMap, ReflectorType, RotorType
+from mappings import CharacterMap, ReflectorDefinition, RotorDefinition
 from rotor import Reflector, Rotor
 
 
@@ -12,15 +12,19 @@ class Spindle(object):
         self.rotor_offsets: List[int] = [1] * capacity
         self.reflector: Reflector
         self.chars_map: CharacterMap = CharacterMap()
-        self.double_step: bool = False
-
-    def set_double_step(self, double_step: bool) -> None:
-        self.double_step = double_step
+        self.steps_per_character: int = 1
 
     def set_capacity(self, capacity: int) -> None:
+        if capacity < 1:
+            raise ValueError("Capacity must be at least 1")
         self.capacity = capacity
 
-    def set_rotor(self, rotor: RotorType, position: int) -> None:
+    def set_steps_per_character(self, steps_per_character: int) -> None:
+        if steps_per_character < 1:
+            raise ValueError("Steps per character must be at least 1")
+        self.steps_per_character = steps_per_character
+
+    def set_rotor(self, rotor: RotorDefinition, position: int) -> None:
         if position < 0 or position >= self.capacity:
             raise ValueError("Invalid position")
         self.rotors[position] = Rotor(rotor)
@@ -39,7 +43,7 @@ class Spindle(object):
         self.rotor_offsets[position] = rotor_offset
         self.rotors[position].set_rotor_offset(self.rotor_offsets[position])
 
-    def set_reflector(self, reflector: ReflectorType) -> None:
+    def set_reflector(self, reflector: ReflectorDefinition) -> None:
         self.reflector = Reflector(reflector)
 
     def reset_rotors(self) -> None:
@@ -56,18 +60,17 @@ class Spindle(object):
             break
         self.rotor_offsets = [r.rotor_offset for r in self.rotors]
 
-
     def encrypt(self, plaintext: str) -> str:
         if any([r == None for r in self.rotors + [self.reflector]]):
             raise Exception("One of the rotors or the reflector is missing")
 
         ciphertext = ""
-        for char in map(lambda x: int(self.chars_map.forward(x)), plaintext):
-            # rotate the rotors
-            self.step_rotors()
+        # for char in map(lambda x: int(self.chars_map.forward(x)), plaintext):
+        for character in plaintext:
+            char = int(self.chars_map.forward(character))
 
-            # double step
-            if self.double_step:
+            # rotate the rotors
+            for i in range(self.steps_per_character):
                 self.step_rotors()
 
             # encrypt through the rotors forwards

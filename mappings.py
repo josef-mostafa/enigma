@@ -16,7 +16,7 @@ class Mapping:
 
 class CharacterMap(Mapping):
     def __init__(self) -> None:
-        self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 ,.!@#$%^&*()"
+        self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
         self.size = len(self.characters)
         self.forward_mappings: Dict[str, str] = {}
         self.reverse_mappings: Dict[str, str] = {}
@@ -53,18 +53,27 @@ class ReflectorMap(Mapping):
         return self.forward.get(character, character)
 
 
-RotorDefinition = namedtuple("RotorDefinition", ["mapping", "notch"])
+RotorDefinition = namedtuple("RotorDefinition", ["name", "mapping", "notch"])
+ReflectorDefinition = namedtuple("ReflectorDefinition", ["name", "mapping"])
 
 
-class RotorType(Enum):
-    I   = RotorDefinition("EKMFLGDQVZNTOWYHXUSPAIBRCJekmflgdqvzntowyhxuspaibrcj1234567890 ,.!@#$%^&*()", "Q")
-    II  = RotorDefinition("AJDKSIRUXBLHWTMCQGZNPYFVOEajdksiruxblhwtmcqgznpyfvoe1234567890 ,.!@#$%^&*()", "E")
-    III = RotorDefinition("BDFHJLCPRTXVZNYEIWGAKMUSQObdfhjlcprtxvznyeiwgakmusqo1234567890 ,.!@#$%^&*()", "V")
-    IV  = RotorDefinition("ESOVPZJAYQUIRHXLNFTGKDCMWBesovpzjayquirhxlnftgkdcmwb1234567890 ,.!@#$%^&*()", "J")
-    V   = RotorDefinition("VZBRGITYUPSDNHLXAWMJQOFECKvzbrgityupsdnhlxawmjqofeck1234567890 ,.!@#$%^&*()", "Z")
+class RotorTypes(Enum):
+    I = RotorDefinition(
+        "I", "EKMFLGDQVZNTOWYHXUSPAIBRCJekmflgdqvzntowyhxuspaibrcj1234567890", "Q")
+    II = RotorDefinition(
+        "II", "AJDKSIRUXBLHWTMCQGZNPYFVOEajdksiruxblhwtmcqgznpyfvoe1234567890", "E")
+    III = RotorDefinition(
+        "III", "BDFHJLCPRTXVZNYEIWGAKMUSQObdfhjlcprtxvznyeiwgakmusqo1234567890", "V")
+    IV = RotorDefinition(
+        "IV", "ESOVPZJAYQUIRHXLNFTGKDCMWBesovpzjayquirhxlnftgkdcmwb1234567890", "J")
+    V = RotorDefinition(
+        "V", "VZBRGITYUPSDNHLXAWMJQOFECKvzbrgityupsdnhlxawmjqofeck1234567890", "Z")
 
 
-class ReflectorType(Enum):
-    A = "EJMZALYXVBWFCRQUONTSPIKHGDejmzalyxvbwfcrquontspikhgd1234567890 ,.!@#$%^&*()"
-    B = "YRUHQSLDPXNGOKMIEBFZCWVJATyruhqsldpxngokmiebfzcwvjat1234567890 ,.!@#$%^&*()"
-    C = "FVPJIAOYEDRZXWGCTKUQSBNMHLfvpjiaoyedrzxwgctkuqsbnmhl1234567890 ,.!@#$%^&*()"
+class ReflectorTypes(Enum):
+    A = ReflectorDefinition(
+        "A", "EJMZALYXVBWFCRQUONTSPIKHGDejmzalyxvbwfcrquontspikhgd1234567890")
+    B = ReflectorDefinition(
+        "B", "YRUHQSLDPXNGOKMIEBFZCWVJATyruhqsldpxngokmiebfzcwvjat1234567890")
+    C = ReflectorDefinition(
+        "C", "FVPJIAOYEDRZXWGCTKUQSBNMHLfvpjiaoyedrzxwgctkuqsbnmhl1234567890")

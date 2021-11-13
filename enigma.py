@@ -7,6 +7,10 @@ class Enigma(object):
         self.spindle: Spindle = Spindle()
         self.plugboard: Plugboard = Plugboard()
 
+    def reset(self) -> None:
+        self.spindle = Spindle()
+        self.plugboard = Plugboard()
+
     def encrypt(self, plaintext: str) -> str:
         ciphertext = self.plugboard.encrypt(plaintext)
         ciphertext = self.spindle.encrypt(ciphertext)
