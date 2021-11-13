@@ -3,7 +3,7 @@ import os
 from enigma import Enigma
 from mappings import CharacterMap, ReflectorTypes, RotorTypes
 
-e = Enigma()
+enigma = Enigma()
 c = CharacterMap()
 
 menu = {
@@ -51,15 +51,15 @@ def main():
             elif choice == 7:
                 remove_plugboard_connection()
             elif choice == 8:
-                e.reset()
+                enigma.reset()
             elif choice == 9:
-                e.spindle.reset_rotors()
+                enigma.spindle.reset_rotors()
             elif choice == 10:
-                e.plugboard.reset()
+                enigma.plugboard.reset()
             elif choice == 11:
                 encrypt()
             elif choice == 12:
-                print(e)
+                print(enigma)
             elif choice == 0:
                 break
             else:
@@ -71,16 +71,16 @@ def main():
 
 def select_rotors():
     print("Current Rotors:")
-    for i, r in enumerate(e.spindle.rotors, 1):
+    for i, r in enumerate(enigma.spindle.rotors, 1):
         if r is not None:
             print(f"{i}: {r.rotor_name}")
         else:
             print(f"{i}: --EMPTY--")
 
-    while position := input("\nSelect a rotor to replace: "):
+    while (position := input("\nSelect a rotor to replace: ")) or True:
         try:
             position = int(position)
-            if position < 1 or position > e.spindle.capacity:
+            if position < 1 or position > enigma.spindle.capacity:
                 print("Invalid position.")
                 continue
         except ValueError:
@@ -94,7 +94,7 @@ def select_rotors():
     for i, name in rotors.items():
         print(f"{i}: {name}")
 
-    while rotor := input("\nSelect a rotor: "):
+    while (rotor := input("\nSelect a rotor: ")) or True:
         try:
             rotor = int(rotor)
             if rotor < 1 or rotor > len(RotorTypes):
@@ -105,12 +105,12 @@ def select_rotors():
             continue
         break
 
-    e.spindle.set_rotor(RotorTypes.__members__[rotors[rotor]].value, position)
+    enigma.spindle.set_rotor(RotorTypes.__members__[rotors[rotor]].value, position)
 
 
 def select_reflector():
-    if e.spindle.reflector is not None:
-        print(f"Current Reflector: {e.spindle.reflector.reflector_name}")
+    if enigma.spindle.reflector is not None:
+        print(f"Current Reflector: {enigma.spindle.reflector.reflector_name}")
     else:
         print("Current Reflector: --EMPTY--")
 
@@ -119,7 +119,7 @@ def select_reflector():
     for i, name in reflectors.items():
         print(f"{i}: {name}")
 
-    while reflector := input("\nSelect a reflector: "):
+    while (reflector := input("\nSelect a reflector: ")) or True:
         try:
             reflector = int(reflector)
             if reflector < 1 or reflector > len(ReflectorTypes):
@@ -130,22 +130,22 @@ def select_reflector():
             continue
         break
 
-    e.spindle.set_reflector(ReflectorTypes.__members__[
+    enigma.spindle.set_reflector(ReflectorTypes.__members__[
                             reflectors[reflector]].value)
 
 
 def set_rotor_offsets():
     print("Current Rotor Offsets:")
-    for i, r in enumerate(e.spindle.rotors, 1):
+    for i, r in enumerate(enigma.spindle.rotors, 1):
         if r is not None:
             print(f"{i}: {r.rotor_name}, offset: {r.rotor_offset}")
         else:
             print(f"{i}: --EMPTY--")
 
-    while position := input("\nSelect a rotor to change its offset: "):
+    while (position := input("\nSelect a rotor to change its offset: ")) or True:
         try:
             position = int(position)
-            if position < 1 or position > e.spindle.capacity:
+            if position < 1 or position > enigma.spindle.capacity:
                 print("Invalid position.")
                 continue
         except ValueError:
@@ -154,7 +154,7 @@ def set_rotor_offsets():
         position -= 1
         break
 
-    while offset := input("\nEnter the new offset: "):
+    while (offset := input("\nEnter the new offset: ")) or True:
         try:
             offset = int(offset)
             if offset < 1 or offset > c.size:
@@ -165,21 +165,21 @@ def set_rotor_offsets():
             continue
         break
 
-    e.spindle.set_rotor_offset(position, offset)
+    enigma.spindle.set_rotor_offset(position, offset)
 
 
 def set_ring_positions():
     print("Current Ring Positions:")
-    for i, r in enumerate(e.spindle.rotors, 1):
+    for i, r in enumerate(enigma.spindle.rotors, 1):
         if r is not None:
             print(f"{i}: {r.rotor_name}, ring position: {r.ring_position}")
         else:
             print(f"{i}: --EMPTY--")
 
-    while position := input("\nSelect a rotor to change its ring position: "):
+    while (position := input("\nSelect a rotor to change its ring position: ")) or True:
         try:
             position = int(position)
-            if position < 1 or position > e.spindle.capacity:
+            if position < 1 or position > enigma.spindle.capacity:
                 print("Invalid position.")
                 continue
         except ValueError:
@@ -188,7 +188,7 @@ def set_ring_positions():
         position -= 1
         break
 
-    while ring_position := input("\nEnter the new ring position: "):
+    while (ring_position := input("\nEnter the new ring position: ")) or True:
         try:
             ring_position = int(ring_position)
             if ring_position < 1 or ring_position > c.size:
@@ -199,13 +199,13 @@ def set_ring_positions():
             continue
         break
 
-    e.spindle.set_ring_position(position, ring_position)
+    enigma.spindle.set_ring_position(position, ring_position)
 
 
 def set_steps_per_character():
-    print(f"Current Steps Per Character: {e.spindle.steps_per_character}")
+    print(f"Current Steps Per Character: {enigma.spindle.steps_per_character}")
 
-    while steps := input("\nEnter the new steps per character: "):
+    while (steps := input("\nEnter the new steps per character: ")) or True:
         try:
             steps = int(steps)
             if steps < 1:
@@ -216,63 +216,76 @@ def set_steps_per_character():
             continue
         break
 
-    e.spindle.set_steps_per_character(steps)
+    enigma.spindle.set_steps_per_character(steps)
 
 
 def add_plugboard_connection():
     print("Current Plugboard:")
-    print(e.plugboard)
-    for i in range(e.plugboard.size + 1, e.plugboard.max_plugs + 1):
+    print(enigma.plugboard)
+    for i in range(enigma.plugboard.size + 1, enigma.plugboard.max_plugs + 1):
         print(f"{i}: --EMPTY--")
 
-    while char_a := input("\nEnter first character: "):
+    while (char_a := input("\nEnter first character: ")) or True:
         if len(char_a) != 1 or char_a not in c.characters:
             print("Invalid character.")
             continue
-        if char_a in e.plugboard.mapping:
+        if char_a in enigma.plugboard.mapping:
             print("Character already used in plugboard.")
             continue
         break
 
-    while char_b := input("\nEnter first character: "):
+    while (char_b := input("\nEnter first character: ")) or True:
         if len(char_b) != 1 or char_b not in c.characters:
             print("Invalid character.")
             continue
-        if char_b in e.plugboard.mapping or char_b == char_a:
+        if char_b in enigma.plugboard.mapping or char_b == char_a:
             print("Character already used in plugboard.")
             continue
         break
 
-    e.plugboard.add_plug(char_a, char_b)
+    enigma.plugboard.add_plug(char_a, char_b)
 
 
 def remove_plugboard_connection():
-    print("Current Plugboard Connections:")
-    print(e.plugboard)
+    if enigma.plugboard.size > 0:
+        print("Current Plugboard Connections:")
+        print(enigma.plugboard)
 
-    while position := input("\nSelect a connection to remove: "):
-        try:
-            position = int(position)
-            if position < 1 or position > e.plugboard.size:
+        while (position := input("\nSelect a connection to remove: ")) or True:
+            try:
+                position = int(position)
+                if position < 1 or position > enigma.plugboard.size:
+                    print("Invalid position.")
+                    continue
+            except ValueError:
                 print("Invalid position.")
                 continue
-        except ValueError:
-            print("Invalid position.")
-            continue
-        position -= 1
-        break
+            position -= 1
+            break
 
-    e.plugboard.remove_plug(e.plugboard.pairs[position][0])
+        enigma.plugboard.remove_plug(enigma.plugboard.pairs[position][0])
+    else:
+        print("No Plugboard Connections.")
 
 
 def encrypt():
-    while text := input("Enter text to encrypt:\n"):
-        if any(map(lambda x: x not in c.characters, text)):
+    if not all([x is not None for x in enigma.spindle.rotors]):
+        print("You haven't selected all rotors yet.")
+        return
+    if enigma.spindle.reflector is None:
+        print("You haven't selected the reflector yet.")
+        return
+
+    while (text := input("Enter text to encrypt:\n")) or True:
+        if any([x not in c.characters for x in text]):
             continue
         break
 
-    print(e.encrypt(text))
+    print(enigma.encrypt(text))
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError) as err:
+        pass

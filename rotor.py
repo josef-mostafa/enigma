@@ -17,6 +17,9 @@ class Rotor(object):
         self.rotor_offset: int = 1
         self.ring_position: int = 1
 
+    def __repr__(self) -> str:
+        return f"{self.rotor_name} - Rotor Offset: {self.rotor_offset} - Ring Position: {self.ring_position}"
+
     def reset(self) -> None:
         """
             Resets the rotor to its initial position.
@@ -99,6 +102,9 @@ class Reflector(object):
         self.chars_map: CharacterMap = CharacterMap()
         self.reflector_size: int = self.chars_map.size
         self.chars: Set[int] = set(range(1, self.reflector_size + 1))
+
+    def __repr__(self) -> str:
+        return self.reflector_name
 
     def forward(self, char: int) -> int:
         """

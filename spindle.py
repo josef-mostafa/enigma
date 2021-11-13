@@ -14,6 +14,9 @@ class Spindle(object):
         self.chars_map: CharacterMap = CharacterMap()
         self.steps_per_character: int = 1
 
+    def __repr__(self) -> str:
+        return "Rotors:\n" + "\n".join(map(lambda r: f"{r[0]}: {r[1].__repr__()}", enumerate(self.rotors, 1))) + "\nReflector: " + self.reflector.__repr__() + "\nSteps Per Character: " + self.steps_per_character
+
     def set_capacity(self, capacity: int) -> None:
         if capacity < 1:
             raise ValueError("Capacity must be at least 1")
