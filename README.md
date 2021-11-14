@@ -12,7 +12,8 @@ This program written in Python serves as a simulation for the WWII Enigma Machin
 -   Lorem Ipsum
 
 # Installation
-1. Clone using git clone: `git clone https://github.com/josef-mostafa/enigma.git`
-2. Run 
+Clone using git clone: `git clone https://github.com/josef-mostafa/enigma.git`
 
 # Usage
+1. Run main.py by opening a command line in the folder enigma, and running `python main.py`
+2. Navigate the menu and choose your preferred settings then encrypt!

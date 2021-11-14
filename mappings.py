@@ -21,7 +21,7 @@ class CharacterMap(Mapping):
         This class is used to map characters to their number equivalent and vice versa.
     """
     def __init__(self) -> None:
-        self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+        self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 ,./;'[]-=!@#$%^&*()"
         self.size = len(self.characters)
         self.forward_mappings: Map = Map(self.size)
         self.reverse_mappings: Map = Map(self.size)
@@ -72,15 +72,15 @@ class RotorTypes(Enum):
         These are the default rotors used in the Enigma machine.
     """
     I = RotorDefinition(
-        "I", "EKMFLGDQVZNTOWYHXUSPAIBRCJekmflgdqvzntowyhxuspaibrcj1234567890", "Q")
+        "I", "%MluQF^a4$xXH3RWf,pb6N/[YKcIq(i*CtLh5s;Oe&zT1w7PU@d !rBSVmj=J]o#G'E.8gAZ2v09nky-D)", "Q")
     II = RotorDefinition(
-        "II", "AJDKSIRUXBLHWTMCQGZNPYFVOEajdksiruxblhwtmcqgznpyfvoe1234567890", "E")
+        "II", "JLoAC3q/%(wrT&d ue*i)t=18z$VN^KcnpMh9#DWkb5lmR-Q4YsU0]BHPSEf62v@GI![y7ax,X;'jOF.Zg", "E")
     III = RotorDefinition(
-        "III", "BDFHJLCPRTXVZNYEIWGAKMUSQObdfhjlcprtxvznyeiwgakmusqo1234567890", "V")
+        "III", ";Z@UE%Q#]OtCfXGra$v14x3yd)sPkBcIwh9R^j6Nl87&[uL0(2Y=H!gqWSJ'eViF ,oK5*zApT.mM-/Dnb", "V")
     IV = RotorDefinition(
-        "IV", "ESOVPZJAYQUIRHXLNFTGKDCMWBesovpzjayquirhxlnftgkdcmwb1234567890", "J")
+        "IV", "uAGQx6YjSr@ev4g'&N*-wC%10K2yU#J;hFb] [9kWsz/qp5RL!c=m,oBMDH$dTXVPn.t^8(iOlEf73ZaI)", "J")
     V = RotorDefinition(
-        "V", "VZBRGITYUPSDNHLXAWMJQOFECKvzbrgityupsdnhlxawmjqofeck1234567890", "Z")
+        "V", "V!g;u%i^Ej&3805Cdtr4Pqv$/#yc'@koD-N6UKp7aZ)mw A]xs,nIReb9XG=lB(H1SYLQhWT*z[.fOJM2F", "Z")
 
 
 class ReflectorTypes(Enum):
@@ -88,8 +88,8 @@ class ReflectorTypes(Enum):
         These are the default reflectors used in the Enigma machine.
     """
     A = ReflectorDefinition(
-        "A", "EJMZALYXVBWFCRQUONTSPIKHGDejmzalyxvbwfcrquontspikhgd1234567890")
+        "A", "&f0%Q7xPvwObM9KHEtcgu/;o@,6LSp5BT .jlk$zXd=2(RUIJG)n1r-'eaF8NChZiVW43q^YmD!Asy")
     B = ReflectorDefinition(
-        "B", "YRUHQSLDPXNGOKMIEBFZCWVJATyruhqsldpxngokmiebfzcwvjat1234567890")
+        "B", "9BCsA3TVwSMPE!K(bIFQR^8j50d m/N$;@GnaxX%-6f.Dy7cULvi2Y)JZr1lHeWpzhO,'k4ut=&ogq")
     C = ReflectorDefinition(
-        "C", "FVPJIAOYEDRZXWGCTKUQSBNMHLfvpjiaoyedrzxwgctkuqsbnmhl1234567890")
+        "C", "t1KHs%(e /oig,&6IvBQcEkUTAzF*7yG3wVxfnl)Yjp$-^q[OauZ;WRS89JXmNPh'=@0C]!LM5d2r.D4b#")
