@@ -1,0 +1,71 @@
+import ctypes
+
+
+class Array(object):
+    def __init__(self, size, default_value=None):
+        assert size > 0, "Array size must be > 0"
+        self._size = size
+        self._default_value = default_value
+        PyArrayType = ctypes.py_object * size
+        self._elements = PyArrayType()
+        self._itemCount = 0
+        self.reset()
+
+    def __len__(self):
+        return self._size
+
+    def __print__(self):
+        for i in range(self._itemCount):
+            print(self._elements[i], end=" ")
+
+    def reset(self):
+        for i in range(self._size):
+            self._elements[i] = self._default_value
+        self._itemCount = 0
+
+    def insert(self, item):
+        if self._size > self._itemCount:
+            self._elements[self._itemCount] = item
+            self._itemCount += 1
+        else:
+            print("Array is full")
+
+    def get(self, index):
+        return self._elements[index]
+
+    def remove(self, item):
+        for i in range(self._itemCount):
+            if self._elements[i] == item:
+                self._itemCount -= 1
+                for j in range(i, self._itemCount):
+                    self._elements[j] = self._elements[j+1]
+                self._elements[self._itemCount] = self._default_value
+                break
+
+    def contains(self, term):
+        for i in range(self._itemCount):
+            if self._elements[i] == term:
+                return True
+        return False
+
+    def set_item(self, position, item):
+        if position >= 0 and position < self._size:
+            self._elements[position] = item
+        else:
+            print("Invalid position")
+
+
+class _MapEntry:
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+
+    def __str__(self):
+        return str(str(self.key)+" : " + str(self.value))
+
+
+class Map:
+    def __init__(self, size):
+        self._entryList = Array(size)
+        self.size = size
+        self.entryCount = 0

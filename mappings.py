@@ -15,8 +15,12 @@ class Mapping:
 
 
 class CharacterMap(Mapping):
+    """
+        This class is used to map characters to their number equivalent and vice versa.
+    """
     def __init__(self) -> None:
-        self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+        # self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+        self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         self.size = len(self.characters)
         self.forward_mappings: Dict[str, str] = {}
         self.reverse_mappings: Dict[str, str] = {}
@@ -29,6 +33,9 @@ class CharacterMap(Mapping):
 
 
 class RotorMap(Mapping):
+    """
+        This class is used to represent a rotor mapping.
+    """
     def __init__(self, mapping_string) -> None:
         self.forward_mappings: Dict[int, int] = {}
         self.reverse_mappings: Dict[int, int] = {}
@@ -41,6 +48,9 @@ class RotorMap(Mapping):
 
 
 class ReflectorMap(Mapping):
+    """
+        This class is used to represent a reflector mapping.
+    """
     def __init__(self, mapping_string) -> None:
         self.forward_mappings: Dict[int, int] = {}
         self.reverse_mappings: Dict[int, int] = {}
@@ -58,22 +68,36 @@ ReflectorDefinition = namedtuple("ReflectorDefinition", ["name", "mapping"])
 
 
 class RotorTypes(Enum):
+    """
+        These are the default rotors used in the Enigma machine.
+    """
     I = RotorDefinition(
-        "I", "EKMFLGDQVZNTOWYHXUSPAIBRCJekmflgdqvzntowyhxuspaibrcj1234567890", "Q")
+        # "I", "EKMFLGDQVZNTOWYHXUSPAIBRCJekmflgdqvzntowyhxuspaibrcj1234567890", "Q")
+        "I", "EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q")
     II = RotorDefinition(
-        "II", "AJDKSIRUXBLHWTMCQGZNPYFVOEajdksiruxblhwtmcqgznpyfvoe1234567890", "E")
+        # "II", "AJDKSIRUXBLHWTMCQGZNPYFVOEajdksiruxblhwtmcqgznpyfvoe1234567890", "E")
+        "II", "AJDKSIRUXBLHWTMCQGZNPYFVOE", "E")
     III = RotorDefinition(
-        "III", "BDFHJLCPRTXVZNYEIWGAKMUSQObdfhjlcprtxvznyeiwgakmusqo1234567890", "V")
+        # "III", "BDFHJLCPRTXVZNYEIWGAKMUSQObdfhjlcprtxvznyeiwgakmusqo1234567890", "V")
+        "III", "BDFHJLCPRTXVZNYEIWGAKMUSQO", "V")
     IV = RotorDefinition(
-        "IV", "ESOVPZJAYQUIRHXLNFTGKDCMWBesovpzjayquirhxlnftgkdcmwb1234567890", "J")
+        # "IV", "ESOVPZJAYQUIRHXLNFTGKDCMWBesovpzjayquirhxlnftgkdcmwb1234567890", "J")
+        "IV", "ESOVPZJAYQUIRHXLNFTGKDCMWB", "J")
     V = RotorDefinition(
-        "V", "VZBRGITYUPSDNHLXAWMJQOFECKvzbrgityupsdnhlxawmjqofeck1234567890", "Z")
+        # "V", "VZBRGITYUPSDNHLXAWMJQOFECKvzbrgityupsdnhlxawmjqofeck1234567890", "Z")
+        "V", "VZBRGITYUPSDNHLXAWMJQOFECK", "Z")
 
 
 class ReflectorTypes(Enum):
+    """
+        These are the default reflectors used in the Enigma machine.
+    """
     A = ReflectorDefinition(
-        "A", "EJMZALYXVBWFCRQUONTSPIKHGDejmzalyxvbwfcrquontspikhgd1234567890")
+        # "A", "EJMZALYXVBWFCRQUONTSPIKHGDejmzalyxvbwfcrquontspikhgd1234567890")
+        "A", "EJMZALYXVBWFCRQUONTSPIKHGD")
     B = ReflectorDefinition(
-        "B", "YRUHQSLDPXNGOKMIEBFZCWVJATyruhqsldpxngokmiebfzcwvjat1234567890")
+        # "B", "YRUHQSLDPXNGOKMIEBFZCWVJATyruhqsldpxngokmiebfzcwvjat1234567890")
+        "B", "YRUHQSLDPXNGOKMIEBFZCWVJAT")
     C = ReflectorDefinition(
-        "C", "FVPJIAOYEDRZXWGCTKUQSBNMHLfvpjiaoyedrzxwgctkuqsbnmhl1234567890")
+        # "C", "FVPJIAOYEDRZXWGCTKUQSBNMHLfvpjiaoyedrzxwgctkuqsbnmhl1234567890")
+        "C", "FVPJIAOYEDRZXWGCTKUQSBNMHL")

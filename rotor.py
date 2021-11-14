@@ -1,5 +1,4 @@
-from typing import Set
-
+from datastructs import Array
 from mappings import (CharacterMap, ReflectorDefinition, ReflectorMap,
                       RotorDefinition, RotorMap)
 
@@ -11,9 +10,12 @@ class Rotor(object):
         self.rotor_map: RotorMap = RotorMap(self.rotor_definition.mapping)
         self.chars_map: CharacterMap = CharacterMap()
         self.rotor_size: int = self.chars_map.size
-        self.chars: Set[int] = set(range(1, self.rotor_size + 1))
-        self.notches: Set[int] = {
-            int(self.chars_map.forward(self.rotor_definition.notch))}
+        self.chars: Array = Array(self.rotor_size)
+        for i in range(1, self.rotor_size + 1):
+            self.chars.insert(i)
+        self.notches: Array = Array(len(self.rotor_definition.notch))
+        for n in self.rotor_definition.notch:
+            self.notches.insert(int(self.chars_map.forward(self.rotor_definition.notch)))
         self.rotor_offset: int = 1
         self.ring_position: int = 1
 
@@ -31,7 +33,7 @@ class Rotor(object):
         """
             Sets the ring position of the rotor.
         """
-        if position not in self.chars:
+        if not self.chars.contains(position):
             raise ValueError("Invalid position")
         self.ring_position = position
 
@@ -39,7 +41,7 @@ class Rotor(object):
         """
             Sets the rotor offset.
         """
-        if offset not in self.chars:
+        if not self.chars.contains(offset):
             raise ValueError("Invalid offset")
         self.rotor_offset = offset
 
@@ -48,7 +50,7 @@ class Rotor(object):
             Advances the rotor by one step.
             Returns True if the rotor has passed one of its notches.
         """
-        passed_notch = self.rotor_offset in self.notches
+        passed_notch = self.notches.contains(self.rotor_offset)
         if self.rotor_offset == self.rotor_size:
             self.rotor_offset = 0
         self.rotor_offset += 1
@@ -70,7 +72,7 @@ class Rotor(object):
         """
             Moves the character forwards through the rotor.
         """
-        if char not in self.chars:
+        if not self.chars.contains(char):
             raise ValueError("Invalid character")
         char = self.update_char(
             char + (self.rotor_offset - self.ring_position))
@@ -83,7 +85,7 @@ class Rotor(object):
         """
             Moves the character backwards through the rotor.
         """
-        if char not in self.chars:
+        if not self.chars.contains(char):
             raise ValueError("Invalid character")
         char = self.update_char(
             char + (self.rotor_offset - self.ring_position))
@@ -101,7 +103,9 @@ class Reflector(object):
             self.reflector_definiton.mapping)
         self.chars_map: CharacterMap = CharacterMap()
         self.reflector_size: int = self.chars_map.size
-        self.chars: Set[int] = set(range(1, self.reflector_size + 1))
+        self.chars: Array = Array(self.reflector_size)
+        for i in range(1, self.reflector_size + 1):
+            self.chars.insert(i)
 
     def __repr__(self) -> str:
         return self.reflector_name
@@ -110,6 +114,6 @@ class Reflector(object):
         """
             Moves the character through the reflector.
         """
-        if char not in self.chars:
+        if not self.chars.contains(char):
             raise ValueError("Invalid character")
         return self.reflector_map.forward(char)

@@ -71,11 +71,8 @@ def main():
 
 def select_rotors():
     print("Current Rotors:")
-    for i, r in enumerate(enigma.spindle.rotors, 1):
-        if r is not None:
-            print(f"{i}: {r.rotor_name}")
-        else:
-            print(f"{i}: --EMPTY--")
+    for i in range(1, enigma.spindle.capacity + 1):
+        print(f"{i}: {enigma.spindle.rotors.get(i - 1)}")
 
     while (position := input("\nSelect a rotor to replace: ")) or True:
         try:
@@ -105,14 +102,12 @@ def select_rotors():
             continue
         break
 
-    enigma.spindle.set_rotor(RotorTypes.__members__[rotors[rotor]].value, position)
+    enigma.spindle.set_rotor(RotorTypes.__members__[
+                             rotors[rotor]].value, position)
 
 
 def select_reflector():
-    if enigma.spindle.reflector is not None:
-        print(f"Current Reflector: {enigma.spindle.reflector.reflector_name}")
-    else:
-        print("Current Reflector: --EMPTY--")
+    print(f"Current Reflector: {enigma.spindle.reflector}")
 
     reflectors = dict(enumerate(ReflectorTypes.__members__.keys(), 1))
 
@@ -131,16 +126,13 @@ def select_reflector():
         break
 
     enigma.spindle.set_reflector(ReflectorTypes.__members__[
-                            reflectors[reflector]].value)
+        reflectors[reflector]].value)
 
 
 def set_rotor_offsets():
     print("Current Rotor Offsets:")
-    for i, r in enumerate(enigma.spindle.rotors, 1):
-        if r is not None:
-            print(f"{i}: {r.rotor_name}, offset: {r.rotor_offset}")
-        else:
-            print(f"{i}: --EMPTY--")
+    for i in range(enigma.spindle.capacity):
+        print(f"{i}: offset: {enigma.spindle.rotor_offsets.get(i)}")
 
     while (position := input("\nSelect a rotor to change its offset: ")) or True:
         try:
@@ -170,11 +162,8 @@ def set_rotor_offsets():
 
 def set_ring_positions():
     print("Current Ring Positions:")
-    for i, r in enumerate(enigma.spindle.rotors, 1):
-        if r is not None:
-            print(f"{i}: {r.rotor_name}, ring position: {r.ring_position}")
-        else:
-            print(f"{i}: --EMPTY--")
+    for i in range(enigma.spindle.capacity):
+        print(f"{i}: offset: {enigma.spindle.ring_positions.get(i)}")
 
     while (position := input("\nSelect a rotor to change its ring position: ")) or True:
         try:
@@ -263,15 +252,16 @@ def remove_plugboard_connection():
             position -= 1
             break
 
-        enigma.plugboard.remove_plug(enigma.plugboard.pairs[position][0])
+        enigma.plugboard.remove_plug(enigma.plugboard.pairs.get(position)[0])
     else:
         print("No Plugboard Connections.")
 
 
 def encrypt():
-    if not all([x is not None for x in enigma.spindle.rotors]):
-        print("You haven't selected all rotors yet.")
-        return
+    for i in range(enigma.spindle.capacity):
+        if enigma.spindle.rotors.get(i) is None:
+            print("You haven't selected all rotors yet.")
+            return
     if enigma.spindle.reflector is None:
         print("You haven't selected the reflector yet.")
         return
