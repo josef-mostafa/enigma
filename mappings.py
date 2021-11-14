@@ -21,7 +21,7 @@ class CharacterMap(Mapping):
         This class is used to map characters to their number equivalent and vice versa.
     """
     def __init__(self) -> None:
-        self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 ,./;'[]-=!@#$%^&*()"
+        self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
         self.size = len(self.characters)
         self.forward_mappings: Map = Map(self.size)
         self.reverse_mappings: Map = Map(self.size)
@@ -72,15 +72,15 @@ class RotorTypes(Enum):
         These are the default rotors used in the Enigma machine.
     """
     I = RotorDefinition(
-        "I", "%MluQF^a4$xXH3RWf,pb6N/[YKcIq(i*CtLh5s;Oe&zT1w7PU@d !rBSVmj=J]o#G'E.8gAZ2v09nky-D)", "Q")
+        "I", "DjcBiLkns1IMzoVOa8lWx7tu0wGfvYpTdrC65mh9UFyZgXqAEbK2JPNQRS43eH", "Q")
     II = RotorDefinition(
-        "II", "JLoAC3q/%(wrT&d ue*i)t=18z$VN^KcnpMh9#DWkb5lmR-Q4YsU0]BHPSEf62v@GI![y7ax,X;'jOF.Zg", "E")
+        "II", "X90qOErIuWLCM6ZhvwYslzAt2nkbapfFeN4SJ1T7jV3HKi5DRPmUd8QcyogxBG", "E")
     III = RotorDefinition(
-        "III", ";Z@UE%Q#]OtCfXGra$v14x3yd)sPkBcIwh9R^j6Nl87&[uL0(2Y=H!gqWSJ'eViF ,oK5*zApT.mM-/Dnb", "V")
+        "III", "x81pMnmrUz3vew6qQlyObR752TASiXGKZLCkd0DoafBcNhYtV9ujJEgsHFI4PW", "V")
     IV = RotorDefinition(
-        "IV", "uAGQx6YjSr@ev4g'&N*-wC%10K2yU#J;hFb] [9kWsz/qp5RL!c=m,oBMDH$dTXVPn.t^8(iOlEf73ZaI)", "J")
+        "IV", "uTdmON85Hr0oMRvSpcwsLUjh3FJCGKXQ6BYt2exVfz4qZAEWiyD7kbaPg1lI9n", "J")
     V = RotorDefinition(
-        "V", "V!g;u%i^Ej&3805Cdtr4Pqv$/#yc'@koD-N6UKp7aZ)mw A]xs,nIReb9XG=lB(H1SYLQhWT*z[.fOJM2F", "Z")
+        "V", "b8md0Ci5jZyYpSkhwJoAnzFPeLxsX1qMWKDHTEV2c43gR9a6Uv7ItlrfQuNOGB", "Z")
 
 
 class ReflectorTypes(Enum):
@@ -88,8 +88,8 @@ class ReflectorTypes(Enum):
         These are the default reflectors used in the Enigma machine.
     """
     A = ReflectorDefinition(
-        "A", "&f0%Q7xPvwObM9KHEtcgu/;o@,6LSp5BT .jlk$zXd=2(RUIJG)n1r-'eaF8NChZiVW43q^YmD!Asy")
+        "A", "EJMZALYXVBWFCRQUONTSPIKHGDejmzalyxvbwfcrquontspikhgd1234567890")
     B = ReflectorDefinition(
-        "B", "9BCsA3TVwSMPE!K(bIFQR^8j50d m/N$;@GnaxX%-6f.Dy7cULvi2Y)JZr1lHeWpzhO,'k4ut=&ogq")
+        "B", "YRUHQSLDPXNGOKMIEBFZCWVJATyruhqsldpxngokmiebfzcwvjat1234567890")
     C = ReflectorDefinition(
-        "C", "t1KHs%(e /oig,&6IvBQcEkUTAzF*7yG3wVxfnl)Yjp$-^q[OauZ;WRS89JXmNPh'=@0C]!LM5d2r.D4b#")
+        "C", "FVPJIAOYEDRZXWGCTKUQSBNMHLfvpjiaoyedrzxwgctkuqsbnmhl1234567890")
