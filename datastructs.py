@@ -8,11 +8,12 @@ class Array(object):
         self._default_value = default_value
         PyArrayType = ctypes.py_object * size
         self._elements = PyArrayType()
-        self._itemCount = 0
+        if default_value != None:
+            self._itemCount = size
         self.reset()
 
     def __len__(self):
-        return self._size
+        return self._itemCount
 
     def __print__(self):
         for i in range(self._itemCount):
@@ -72,6 +73,9 @@ class Map:
         self._entryList = Array(size)
         self._size = size
         self._entryCount = 0
+
+    def __len__(self):
+        return self._entryCount
 
     def insert(self, key, value):
         for i in range(self._entryCount):
