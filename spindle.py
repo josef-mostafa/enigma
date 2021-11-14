@@ -57,7 +57,7 @@ class Spindle(object):
         self.ring_positions.set_item(position, ring_position)
         if self.rotors.get(position) is not None:
             r = self.rotors.get(position)
-            r.set_ring_position(self.ring_positions(position))
+            r.set_ring_position(self.ring_positions.get(position))
 
     def set_rotor_offset(self, position: int, rotor_offset: int) -> None:
         """
@@ -68,7 +68,7 @@ class Spindle(object):
         self.rotor_offsets.set_item(position, rotor_offset)
         if self.rotors.get(position) is not None:
             r = self.rotors.get(position)
-            r.set_rotor_offset(self.rotor_offsets(position))
+            r.set_rotor_offset(self.rotor_offsets.get(position))
 
     def set_reflector(self, reflector: ReflectorDefinition) -> None:
         """

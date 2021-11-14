@@ -33,13 +33,16 @@ class Array(object):
     def get(self, index):
         return self._elements[index]
 
+    def remove_at(self, index):
+        self._itemCount -= 1
+        for i in range(index, self._itemCount):
+            self._elements[i] = self._elements[i+1]
+        self._elements[self._itemCount] = self._default_value
+
     def remove(self, item):
         for i in range(self._itemCount):
             if self._elements[i] == item:
-                self._itemCount -= 1
-                for j in range(i, self._itemCount):
-                    self._elements[j] = self._elements[j+1]
-                self._elements[self._itemCount] = self._default_value
+                self.remove_at(i)
                 break
 
     def contains(self, term):
@@ -67,5 +70,35 @@ class _MapEntry:
 class Map:
     def __init__(self, size):
         self._entryList = Array(size)
-        self.size = size
-        self.entryCount = 0
+        self._size = size
+        self._entryCount = 0
+
+    def insert(self, key, value):
+        for i in range(self._entryCount):
+            if self._entryList.get(i).key == key:
+                print("Key already exists")
+                return
+        if self._size > self._entryCount:
+            entry = _MapEntry(key, value)
+            self._entryList.insert(entry)
+            self._entryCount += 1
+        else:
+            print("Map is full")
+
+    def get(self, key):
+        for i in range(self._entryCount):
+            if self._entryList.get(i).key == key:
+                return self._entryList.get(i).value
+
+    def remove(self, key):
+        for i in range(self._entryCount):
+            if self._entryList.get(i).key == key:
+                self._entryList.remove_at(i)
+                self._entryCount -= 1
+                break
+
+    def contains(self, key):
+        for i in range(self._entryCount):
+            if self._entryList.get(i).key == key:
+                return True
+        return False

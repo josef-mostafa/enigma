@@ -4,7 +4,7 @@ from enigma import Enigma
 from mappings import CharacterMap, ReflectorTypes, RotorTypes
 
 enigma = Enigma()
-c = CharacterMap()
+char_map = CharacterMap()
 
 menu = {
     1: "Select Rotors",
@@ -132,7 +132,7 @@ def select_reflector():
 def set_rotor_offsets():
     print("Current Rotor Offsets:")
     for i in range(enigma.spindle.capacity):
-        print(f"{i}: offset: {enigma.spindle.rotor_offsets.get(i)}")
+        print(f"{i+1}: offset: {enigma.spindle.rotor_offsets.get(i)}")
 
     while (position := input("\nSelect a rotor to change its offset: ")) or True:
         try:
@@ -149,7 +149,7 @@ def set_rotor_offsets():
     while (offset := input("\nEnter the new offset: ")) or True:
         try:
             offset = int(offset)
-            if offset < 1 or offset > c.size:
+            if offset < 1 or offset > char_map.size:
                 print("Invalid offset.")
                 continue
         except ValueError:
@@ -163,7 +163,7 @@ def set_rotor_offsets():
 def set_ring_positions():
     print("Current Ring Positions:")
     for i in range(enigma.spindle.capacity):
-        print(f"{i}: offset: {enigma.spindle.ring_positions.get(i)}")
+        print(f"{i+1}: offset: {enigma.spindle.ring_positions.get(i)}")
 
     while (position := input("\nSelect a rotor to change its ring position: ")) or True:
         try:
@@ -180,7 +180,7 @@ def set_ring_positions():
     while (ring_position := input("\nEnter the new ring position: ")) or True:
         try:
             ring_position = int(ring_position)
-            if ring_position < 1 or ring_position > c.size:
+            if ring_position < 1 or ring_position > char_map.size:
                 print("Invalid ring position.")
                 continue
         except ValueError:
@@ -209,25 +209,28 @@ def set_steps_per_character():
 
 
 def add_plugboard_connection():
+    if enigma.plugboard.size == enigma.plugboard.max_plugs:
+        print("Pluboard is Full.")
+        return
     print("Current Plugboard:")
     print(enigma.plugboard)
     for i in range(enigma.plugboard.size + 1, enigma.plugboard.max_plugs + 1):
         print(f"{i}: --EMPTY--")
 
     while (char_a := input("\nEnter first character: ")) or True:
-        if len(char_a) != 1 or char_a not in c.characters:
+        if len(char_a) != 1 or char_a not in char_map.characters:
             print("Invalid character.")
             continue
-        if char_a in enigma.plugboard.mapping:
+        if enigma.plugboard.mapping.contains(char_a):
             print("Character already used in plugboard.")
             continue
         break
 
     while (char_b := input("\nEnter first character: ")) or True:
-        if len(char_b) != 1 or char_b not in c.characters:
+        if len(char_b) != 1 or char_b not in char_map.characters:
             print("Invalid character.")
             continue
-        if char_b in enigma.plugboard.mapping or char_b == char_a:
+        if enigma.plugboard.mapping.contains(char_b) or char_b == char_a:
             print("Character already used in plugboard.")
             continue
         break
@@ -267,7 +270,9 @@ def encrypt():
         return
 
     while (text := input("Enter text to encrypt:\n")) or True:
-        if any([x not in c.characters for x in text]):
+        if any([x not in char_map.characters for x in text]):
+            print("Invalid character entered!")
+            print(f"Allowed characters: {char_map.characters}")
             continue
         break
 

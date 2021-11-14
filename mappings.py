@@ -1,6 +1,8 @@
 from collections import namedtuple
 from enum import Enum
-from typing import Any, Dict
+from typing import Any
+
+from datastructs import Map
 
 
 class Mapping:
@@ -8,25 +10,26 @@ class Mapping:
         self.characters: str
 
     def forward(self, character: Any) -> Any:
-        return self.forward_mappings.get(character, character)
+        return self.forward_mappings.get(character)
 
     def reverse(self, character: Any) -> Any:
-        return self.reverse_mappings.get(character, character)
+        return self.reverse_mappings.get(character)
 
 
 class CharacterMap(Mapping):
     """
         This class is used to map characters to their number equivalent and vice versa.
     """
+
     def __init__(self) -> None:
         # self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
         self.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         self.size = len(self.characters)
-        self.forward_mappings: Dict[str, str] = {}
-        self.reverse_mappings: Dict[str, str] = {}
+        self.forward_mappings: Map = Map(self.size)
+        self.reverse_mappings: Map = Map(self.size)
         for i, c in enumerate(self.characters):
-            self.forward_mappings[c] = str(i + 1)
-            self.reverse_mappings[str(i + 1)] = c
+            self.forward_mappings.insert(c, str(i + 1))
+            self.reverse_mappings.insert(str(i + 1), c)
 
     def get_characters(self) -> str:
         return self.characters
@@ -36,28 +39,29 @@ class RotorMap(Mapping):
     """
         This class is used to represent a rotor mapping.
     """
+
     def __init__(self, mapping_string) -> None:
-        self.forward_mappings: Dict[int, int] = {}
-        self.reverse_mappings: Dict[int, int] = {}
         chars = CharacterMap()
+        self.forward_mappings: Map = Map(chars.size)
+        self.reverse_mappings: Map = Map(chars.size)
         for i, c in enumerate(chars.get_characters()):
-            self.forward_mappings[int(chars.forward(c))] = int(
-                chars.forward(mapping_string[i]))
-            self.reverse_mappings[int(chars.forward(mapping_string[i]))] = int(
-                chars.forward(c))
+            self.forward_mappings.insert(int(chars.forward(c)), int(
+                chars.forward(mapping_string[i])))
+            self.reverse_mappings.insert(int(chars.forward(mapping_string[i])), int(
+                chars.forward(c)))
 
 
 class ReflectorMap(Mapping):
     """
         This class is used to represent a reflector mapping.
     """
+
     def __init__(self, mapping_string) -> None:
-        self.forward_mappings: Dict[int, int] = {}
-        self.reverse_mappings: Dict[int, int] = {}
         chars = CharacterMap()
+        self.forward_mappings: Map = Map(chars.size)
         for i, c in enumerate(chars.get_characters()):
-            self.forward_mappings[int(chars.forward(c))] = int(
-                chars.forward(mapping_string[i]))
+            self.forward_mappings.insert(int(chars.forward(c)), int(
+                chars.forward(mapping_string[i])))
 
     def reverse(self, character: int) -> int:
         return self.forward.get(character, character)

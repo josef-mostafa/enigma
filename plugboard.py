@@ -1,13 +1,14 @@
 from typing import Dict
 
-from datastructs import Array
+from datastructs import Array, Map
+from mappings import Mapping
 
 
 class Plugboard(object):
     def __init__(self) -> None:
         self.max_plugs = 10
         self.size = 0
-        self.mapping: Dict[str, str] = {}
+        self.mapping: Map = Map(self.max_plugs * 2)
         self.pairs: Array = Array(self.max_plugs)
 
     def __repr__(self) -> str:
@@ -18,8 +19,8 @@ class Plugboard(object):
             Removes all plugs from the plugboard.
         """
         self.size = 0
-        self.mapping = {}
-        self.pairs = []
+        self.mapping = Map(self.max_plugs * 2)
+        self.pairs = Array(self.max_plugs)
 
     def add_plug(self, char_a: str, char_b: str) -> None:
         """
@@ -28,37 +29,43 @@ class Plugboard(object):
         if (self.size == self.max_plugs):
             raise Exception("Plugboard is full")
 
-        if (char_a in self.mapping):
+        if (self.mapping.contains(char_a)):
             raise Exception("Plug already exists")
 
-        if (char_b in self.mapping):
+        if (self.mapping.contains(char_b)):
             raise Exception("Plug already exists")
 
         self.pairs.insert((char_a, char_b))
 
-        self.mapping[char_a] = char_b
-        self.mapping[char_b] = char_a
+        self.mapping.insert(char_a, char_b)
+        self.mapping.insert(char_b, char_a)
         self.size += 1
 
     def remove_plug(self, char: str) -> None:
         """
             Removes a plug from the plugboard.
         """
-        if (char not in self.mapping):
+        if (not self.mapping.contains(char)):
             raise Exception("Plug does not exist")
 
-        if self.pairs.contains((char, self.mapping[char])):
-            self.pairs.remove((char, self.mapping[char]))
+        if self.pairs.contains((char, self.mapping.get(char))):
+            self.pairs.remove((char, self.mapping.get(char)))
 
-        if self.pairs.contains((self.mapping[char], char)):
-            self.pairs.remove((self.mapping[char], char))
+        if self.pairs.contains((self.mapping.get(char), char)):
+            self.pairs.remove((self.mapping.get(char), char))
 
-        del self.mapping[self.mapping[char]]
-        del self.mapping[char]
+        self.mapping.remove(self.mapping.get(char))
+        self.mapping.remove(char)
         self.size -= 1
 
     def encrypt(self, plaintext: str) -> str:
         """
             Encrypts a plaintext string using the plugboard.
         """
-        return "".join([self.mapping.get(char, char) for char in plaintext])
+        ciphertext = ""
+        for char in plaintext:
+            if self.mapping.contains(char):
+                ciphertext += self.mapping.get(char)
+            else:
+                ciphertext += char
+        return ciphertext
